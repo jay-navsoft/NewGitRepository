@@ -12,7 +12,7 @@ namespace GithubAccessTest.Models
 
         public List<string> GetGithubCommit(GitModel model)
         {
-            var client1 = new RestSharp.RestClient("https://docs.github.com/en/enterprise-server@3.1/rest/reference/repos?"+model.Username+"&"+model.Token+"&"+model.Giturl);
+            var client1 = new RestSharp.RestClient("https://api.github.com/repos"+"/"+ model.Username +"/"+ model.Giturl +"/"+"commits");
             var request1 = new RestRequest(Method.GET);
             ServicePointManager.SecurityProtocol = (SecurityProtocolType)3072;
             request1.RequestFormat = DataFormat.Json;
