@@ -10,8 +10,9 @@ namespace GithubAccessTest.Models
     public class GithubApi
     {
 
-        public List<string> GetGithubCommit(GitModel model)
+        public string GetGithubCommit(GitModel model)
         {
+            //https://api.github.com/repos/jay-navsoft/NewGitRepository/git/commits/2592568d6c21459eeeb670b666a2a2e3fc549a79
             var client1 = new RestSharp.RestClient("https://api.github.com/repos"+"/"+ model.Username +"/"+ model.Giturl +"/"+"commits");
             var request1 = new RestRequest(Method.GET);
             ServicePointManager.SecurityProtocol = (SecurityProtocolType)3072;
@@ -22,10 +23,8 @@ namespace GithubAccessTest.Models
             //request1.AddHeader("content-type", "application/json");
             //request1.AddParameter("application/json", jsondata, ParameterType.RequestBody);
             IRestResponse response = client1.Execute(request1);
-            string responsedata = response.Content.ToString();
-            List<string> data = new List<string>();
-            data.Add(responsedata);
-            return data;  
+            string responsedata = response.Content.ToString();           
+            return responsedata;  
         }
 
     }

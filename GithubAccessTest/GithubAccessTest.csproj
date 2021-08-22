@@ -130,6 +130,7 @@
     </Compile>
     <Compile Include="Models\GithubApi.cs" />
     <Compile Include="Models\GitModel.cs" />
+    <Compile Include="Models\Utility.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
