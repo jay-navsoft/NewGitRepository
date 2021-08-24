@@ -34,9 +34,8 @@
             @Html.HiddenFor(modelItem => item.commit.committer.date)
         </td>
         <td>
-            @Html.ActionLink("Words Count", "WordsCount", new { id=item.sha, message= item.commit.message}) |
-            @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-            @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+            @Html.ActionLink("Words Count", "WordsCount", new {message= item.commit.message})
+            
         </td>
     </tr>
 }
