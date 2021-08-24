@@ -1,0 +1,29 @@
+﻿@model Dictionary<string, int>
+@{
+    ViewBag.Title = "WordsCount";
+}
+
+<h2>WordsCount</h2>
+<table class="table">
+    <tr>
+        <th>
+            Word
+        </th>
+        <th>
+            Count
+        </th>
+    </tr>
+
+    @foreach (KeyValuePair<string, int> word in Model)
+    {
+        <tr>
+            <td>
+                @word.Key
+            </td>
+            <td>
+                @word.Value
+            </td>
+        </tr>
+    }
+
+</table>

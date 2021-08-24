@@ -123,6 +123,7 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="AVL.cs" />
     <Compile Include="Controllers\GitCommitAccessController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Global.asax.cs">
@@ -171,6 +172,7 @@
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\GitCommitAccess\GetGitCommits.cshtml" />
     <Content Include="Views\GitCommitAccess\CreateGitUI.cshtml" />
+    <Content Include="Views\GitCommitAccess\WordsCount.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -206,7 +208,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>1037</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:1037/</IISUrl>
+          <IISUrl>http://localhost:1038/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>
