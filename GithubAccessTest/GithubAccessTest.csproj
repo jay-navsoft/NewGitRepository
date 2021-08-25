@@ -129,6 +129,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\AVLTree.cs" />
     <Compile Include="Models\GithubApi.cs" />
     <Compile Include="Models\GitModel.cs" />
     <Compile Include="Models\Utility.cs" />

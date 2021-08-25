@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Web;
 
 namespace GithubAccessTest.Models
 {
-    public  static class Utility
+    public static class Utility
     {
         public static DataTable ToDataTable<T>(List<T> items)
         {
@@ -36,6 +37,55 @@ namespace GithubAccessTest.Models
             return dataTable;
         }
 
-     
+        public static Dictionary<string, int> WordCount(string sha, string message)
+        {
+            Dictionary<string, int> wordCount = new Dictionary<string, int>();
+            foreach (string word in message.Split(' ', ','))
+            {
+                KeyValuePair<string, int> wordCountItem = wordCount.FirstOrDefault(i => i.Key.ToLower() == word.ToLower());
+                if (wordCountItem.Value == 0) wordCount.Add(word.ToLower(), 1);
+                else wordCount[word.ToLower()] = wordCountItem.Value + 1;
+            }
+            return wordCount;
+        }
+        public static void ToCSV(this DataTable dtDataTable, string strFilePath)
+        {
+            StreamWriter sw = new StreamWriter(strFilePath, false);
+            //headers    
+            for (int i = 0; i < dtDataTable.Columns.Count; i++)
+            {
+                sw.Write(dtDataTable.Columns[i]);
+                if (i < dtDataTable.Columns.Count - 1)
+                {
+                    sw.Write(",");
+                }
+            }
+            sw.Write(sw.NewLine);
+            foreach (DataRow dr in dtDataTable.Rows)
+            {
+                for (int i = 0; i < dtDataTable.Columns.Count; i++)
+                {
+                    if (!Convert.IsDBNull(dr[i]))
+                    {
+                        string value = dr[i].ToString();
+                        if (value.Contains(','))
+                        {
+                            value = String.Format("\"{0}\"", value);
+                            sw.Write(value);
+                        }
+                        else
+                        {
+                            sw.Write(dr[i].ToString());
+                        }
+                    }
+                    if (i < dtDataTable.Columns.Count - 1)
+                    {
+                        sw.Write(",");
+                    }
+                }
+                sw.Write(sw.NewLine);
+            }
+            sw.Close();
+        }
     }
 }

@@ -26,24 +26,6 @@ namespace GithubAccessTest.Controllers
         {
             return View();
         }
-        public static dynamic Deserialize(string content, Type convertType = null)
-        {
-            if (content != null)
-            {
-                if (convertType != null)
-                {
-                    return _jsObj.Deserialize(content, convertType);
-                }
-                else
-                {
-                    return _jsObj.Deserialize(content, content.GetType());
-                }
-            }
-            else
-            {
-                return "Data not available.";
-            }
-        }
         public ActionResult GetGitCommits(GitModel model)
         {
             Dictionary<string, string> dictionaryObj1 = new Dictionary<string, string>();
@@ -52,65 +34,61 @@ namespace GithubAccessTest.Controllers
             List<string> listdata = new List<string>();
             string response = githubApi.GetGithubCommit(model);
             List<GitResponse> gitResponses = JsonConvert.DeserializeObject<List<GitResponse>>(response);
-
-            List<string> messages = new List<string>();
-            List<string> words = new List<string>();
-            List<string> asciicode = new List<string>();
-            AVL tree = new AVL();
-            int ascii = 0;
-            foreach (GitResponse item in gitResponses)
-            {
-                item.username = model.Username;
-                item.token = model.Token;
-                item.reponame = model.Giturl;
-
-                if (!string.IsNullOrEmpty(item.commit.message))
-                {
-                    messages.Add(item.commit.message);
-                    var charArrayList = messages.Select(str => str.ToArray()).ToList();
-
-                    for (int i = 0; i <= charArrayList.Count; i++)
-                    {
-                        ascii = charArrayList[0][i];
-                        tree.Add(ascii);
-                    }
-                    model.Avl = tree;
-                    Node node = new Node(ascii);
-                    AvlModel avlModel = new AvlModel();
-                    
-                }
-            }
-            
-            string message = string.Empty;
-
-           
             return View(gitResponses);
         }
         public ActionResult WordsCount(string sha, string message)
         {
-            
             Dictionary<string, int> wordCount = new Dictionary<string, int>();
-            foreach (string word in message.Split(' ', ','))
-            {
-                KeyValuePair<string, int> wordCountItem = wordCount.FirstOrDefault(i => i.Key.ToLower() == word.ToLower());
-                if (wordCountItem.Value == 0) wordCount.Add(word.ToLower(), 1);
-                else wordCount[word.ToLower()] = wordCountItem.Value + 1;
-                ViewBag.Message = message;            
-                
-                string path = @"E:\csv\data.csv";
-                String csv = String.Join(
-                   Environment.NewLine,
-                 wordCount.Select(d => $"{d.Key} {d.Value}")
-);
-                
-                System.IO.File.WriteAllText(path, csv);
-            }
-            
+            wordCount = Utility.WordCount(sha, message);
+            var count_query =
+            from string word in message.Split(' ')
+            orderby word.ToCharArray().Distinct().Count()
+            select word.ToCharArray().Distinct().Count() + ", " + word;
+            ViewBag.Message = message;
             return View(wordCount);
         }
+        public void DownloadCsv(string sha, string message)
+        {
+            Dictionary<string, int> wordCount = new Dictionary<string, int>();
+            wordCount = Utility.WordCount(sha, message);
+            foreach (string word in message.Split(' ', ','))
+            {
+                DataTable dt = new DataTable();
+                dt.Columns.Add("Commit Word", typeof(string));
+                dt.Columns.Add("Word Count", typeof(string));
 
+                foreach (KeyValuePair<string, int> dict in wordCount)
+                {
+                    dt.Rows.Add(dict.Key, dict.Value);
+                }
+                string filename = @"E:\csv\data.csv";
+                dt.ToCSV(filename);
+            }
 
+        }
 
+        public void AvlTreeSort(string sha, string message)
+        {
 
+            List<string> messages = new List<string>();
+            List<string> words = new List<string>();
+            List<string> asciicode = new List<string>();
+
+            //Values acquired by AVL tree but not in use
+            AVL tree = new AVL();
+            //AVLTree tree = new AVLTree();
+            int ascii = 0;
+            messages.Add(message);
+            var charArrayList = messages.Select(str => str.ToArray()).ToList();
+            
+                for (int i = 0; i <= charArrayList.Count; i++)
+                {
+                    ascii = charArrayList[0][i];// This will access all the ASCII code within their character 
+
+                    tree.Add(ascii); //This will add the ASCII code into AVL tree 
+                    //tree.root = tree.insert(tree.root, ascii);
+                }
+
+        }
     }
 }

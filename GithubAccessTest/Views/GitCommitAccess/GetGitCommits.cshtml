@@ -4,12 +4,12 @@
     ViewBag.Title = "GetGitCommits";
 }
 
-<h2>GetGitCommits</h2>
+<h4 style="text-decoration-color:blue">Git Commits List</h4>
 
 <p>
     @*@Html.ActionLink()*@
 </p>
-<table class="table">
+<table class="table table-responsive">
     <tr>
         <th>
            Git Message
@@ -24,6 +24,7 @@
 
 @foreach (var item in Model) {
     <tr>
+        
         <td>
             @Html.DisplayFor(modelItem => item.commit.message)
         </td>
@@ -34,10 +35,14 @@
             @Html.HiddenFor(modelItem => item.commit.committer.date)
         </td>
         <td>
-            @Html.ActionLink("Words Count", "WordsCount", new {message= item.commit.message})
-            
+            @Html.ActionLink("Words Count", "WordsCount", new { message = item.commit.message })|
+            @Html.ActionLink("Download in CSV", "DownloadCsv", new { message = item.commit.message })|
+            @Html.ActionLink("AVL Tree", "AvlTreeSort", new { message = item.commit.message })
         </td>
     </tr>
 }
-
+    
 </table>
+<div>
+    @ViewBag.Node
+</div>
